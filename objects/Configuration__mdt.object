@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Vertical__c</fullName>
+        <label>Vertical</label>
+        <length>200</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>AccuracyLevel__c</fullName>
+        <label>Accuracy level</label>
+        <length>200</length>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>IsSpecial__c</fullName>
+        <label>Boolean Configuration</label>
+        <defaultValue>false</defaultValue>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Rounding__c</fullName>
+        <label>Rounding Precision</label>
+        <type>Number</type>
+        <precision>12</precision>
+        <scale>0</scale>
+    </fields>
+    <fields>
+        <fullName>TabIndex__c</fullName>
+        <label>Tab Index</label>
+        <type>Number</type>
+        <precision>12</precision>
+        <scale>0</scale>
+    </fields>
+    <label>Configuration</label>
+    <pluralLabel>Configurations</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

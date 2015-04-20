@@ -1,0 +1,434 @@
+<apex:page controller="ConfigurationController" docType="html-5.0" showHeader="true" sidebar="false" action="{!checkMetadataAPIConnection}">
+    <apex:includeScript value="{!URLFOR($Resource.CumulusStaticResources, '/jquery/jquery-1.10.2.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.CumulusStaticResources, '/jquery/jquery-migrate-1.2.1.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.CumulusStaticResources, '/CollapsibleList/CollapsibleList.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.CumulusStaticResources, '/Bootstrap/js/bootstrap.min.js')}" />
+    <apex:styleSheet value="{!URLFOR($Resource.CumulusStaticResources, '/Bootstrap/css/bootstrap-namespaced-s1.css')}" />
+<style> 
+    /* COMMON CSS FOR ALL SETTINGS PAGES */
+    .noSidebarCell { 
+        padding: 0px;
+    }
+    
+    .bootstrap {
+        background: #fff;
+    }
+    
+    .bootstrap .container {
+        width: auto;
+        min-width: 800px;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .bootstrap .container .sidebar {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .bootstrap .container .content {
+        padding: 15px;
+    }
+    
+    .bootstrap .container .list-unstyled li {
+        margin-left: 0;
+    }
+
+    .bootstrap .page-header {
+        margin: 0 0 15px;
+        padding: 0;
+        border-bottom: none;
+    }
+    
+    .bootstrap .page-header h1, .bootstrap .page-header h2 {
+        margin: 0;
+        padding: 0;
+        color: #293f54;
+        margin-left: 36px;
+    }
+    
+    .bootstrap .noborder {
+        border: 0;
+        box-shadow: none;
+    }
+    
+    .bootstrap span.caret {
+       border-top: 0;
+    }
+    
+    .page-header h1 {
+        font-size: 12px;
+        font-weight: bold;
+    }
+    
+    .page-header h2 {
+        font-size: 22px;
+        font-weight: normal;
+    }
+    
+    .pageTitleIcon {
+        float: left;
+    }
+    
+    .bootstrap h3.section-header {
+        color: #696e71;
+        background-color: #e8eaeb;
+        font-size: 13px;
+        padding: 8px 14px;
+        text-transform: uppercase;
+        clear: both;
+    }
+    
+    .bootstrap .pbBody {
+        color: #525354;
+    }
+    
+    .bootstrap .pbBody p {
+        margin-bottom: 10px;
+    }
+    .bootstrap .form-control-column {
+        margin-top: 7px;
+    }
+    
+    .bootstrap .form-control-column input[type="text"],
+    .bootstrap .form-control-column input[type="number"],
+    .bootstrap .form-control-column input[type="password"],
+    .bootstrap .form-control-column input[type="datetime"],
+    .bootstrap .form-control-column input[type="url"] {
+        margin-top: -7px;
+    }
+    
+    .bootstrap .form-control-column input[type="number"],
+    .bootstrap .form-control-column input[type="datetime"] {
+        max-width: 12em;
+    }
+    
+    .bootstrap .button-block {
+        margin: 10px;
+        text-align: center;
+    }
+    
+    .inline-form-block {
+        margin-bottom: 24px;
+    }
+    
+    .bootstrap .btn-primary[disabled] {
+        color: #919293;
+        border: 1px solid #ccc;
+        font-weight: normal;
+    }
+    
+    .sub-nav-item {
+        margin-left: 20px;
+    }
+    
+    .panelButtons {
+        padding-left: 400px;
+    }
+    
+    .clsLoading {
+        z-index: 99;
+        position: fixed;
+        top: 30%;
+        left: 30%;
+        background: lightyellow;
+        width: 400px;
+        height: 40px; 
+        border-radius: 4px;      
+    }   
+
+    /* END - COMMON CSS FOR ALL SETTINGS PAGES */
+      /* SIDEBAR CSS */
+        
+    .sidebar ul {
+        margin: 0; 
+        padding: 0; 
+        list-style: none;
+        background: lightgray; 
+    }
+        
+    div.navbar ul li {
+        font-size: 100%; 
+        margin-bottom: 0px;
+        margin-left: 0px;
+        padding: 2px; 
+        background: #f2f5f6;
+        font-weight: normal; 
+        border: 1px solid #dce4e7;
+        border-top-color: #fff;
+    }
+        
+    div.navbar ul li:hover {
+        background: gray; 
+    }
+    
+    div.navbar ul li.subitem:hover {
+        background: gray; 
+    }
+    
+    div.navbar ul li.subitem {
+        background: #eaeef0; 
+        border-bottom: 0;
+        border-top: 0;        
+    }
+    
+    div.navbar {
+       border-top: 1px solid #dce4e7;
+    }
+    
+    div.navbar ul li a {
+        display: block; 
+        text-decoration: none; 
+        padding: 5px 5px 5px 10px;
+        font-size: 100%; 
+        color: black;
+    }
+        
+    div.navbar ul li a:hover {
+        color: #fff; 
+        background: none; 
+    }
+    
+    div.navbar ul li.nav-selected {
+        background: LightGray;
+    }
+
+    .nav-section-title {
+        display: block; 
+        text-decoration: none; 
+        padding: 5px 5px 5px 10px;
+        font-size: 100%; 
+        color: black;
+    }
+        
+    li.collapsed .caret {
+        float: right;
+        width: 0;
+        height: 0;
+        display: inline-block;
+        vertical-align: top;
+        content: "";
+        margin-top: 8px;
+        margin-left: 2px;
+        border-top: 4px solid #000;
+        border-bottom: 0px;
+        border-right: 4px solid transparent;
+        border-left: 4px solid transparent;
+    }
+
+    li .caret {
+        float: right;
+        width: 0;
+        height: 0;
+        display: inline-block;
+        vertical-align: top;
+        content: "";
+        margin-top: 8px;
+        margin-left: 2px;
+        border-top: none;
+        border-bottom: 4px solid #000;
+        border-right: 4px solid transparent;
+        border-left: 4px solid transparent;
+    }
+
+    /* END - SIDEBAR STYLES */    
+
+</style>
+
+<script>
+    var j$ = jQuery.noConflict();
+    var idPanelCurrent = '{!idPanelCurrent}';
+    
+    // page init function
+    j$(function () {        
+        ShowPanel(idPanelCurrent);
+    });
+        
+    function ShowPanel(idPanel) {            
+        var node;
+        node = document.getElementById(idPanelCurrent);
+        if (node != null) node.style.display =  'none';
+        node = document.getElementById(idPanelCurrent + 'Nav');
+        if (node != null) node.classList.remove('nav-selected');
+
+        node = document.getElementById(idPanel);
+        if (node != null) node.style.display =  'block';
+        idPanelCurrent = idPanel;
+        node = document.getElementById(idPanelCurrent + 'Nav');
+        if (node != null) node.classList.add('nav-selected');
+        
+        // scroll the panel into view
+        j$('body').scrollTop(0);
+        
+        if (idPanelCurrent != '{!idPanelCurrent}'){
+            setPanelCurrent(idPanelCurrent);
+        }
+        
+    }
+    
+    function createRemoteSite(){
+        // Disable button
+        document.getElementById('createremotesitebtn').disabled = true;
+        var protocol = window.location.protocol;
+        // Calls the Metdata API from JavaScript to create the Remote Site Setting to permit Apex callouts
+        var binding = new XMLHttpRequest();
+        var request =
+            '<?xml version="1.0" encoding="utf-8"?>' +
+            '<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'+
+                '<env:Header>' +
+                    '<urn:SessionHeader xmlns:urn="http://soap.sforce.com/2006/04/metadata">' +
+                        '<urn:sessionId>{!$Api.Session_ID}</urn:sessionId>' +
+                    '</urn:SessionHeader>' +
+                '</env:Header>' +
+                '<env:Body>' +
+                    '<createMetadata xmlns="'+protocol+'//soap.sforce.com/2006/04/metadata">' +
+                        '<metadata xsi:type="RemoteSiteSetting">' +
+                            '<fullName>config_mdapi</fullName>' +
+                            '<description>Metadata API Remote Site Setting for Configurations</description>' +
+                            '<disableProtocolSecurity>false</disableProtocolSecurity>' +
+                            '<isActive>true</isActive>' +
+                            '<url>'+protocol+'//{!Host}</url>' +
+                        '</metadata>' +
+                    '</createMetadata>' +
+                '</env:Body>' +
+            '</env:Envelope>';
+        binding.open('POST',protocol+'//{!Host}/services/Soap/m/31.0');
+        binding.setRequestHeader('SOAPAction','""');
+        binding.setRequestHeader('Content-Type', 'text/xml');
+        binding.onreadystatechange =
+            function() {
+                if(this.readyState==4) {
+                    var parser = new DOMParser();
+                    var doc  = parser.parseFromString(this.response, 'application/xml');
+                    var errors = doc.getElementsByTagName('errors');
+                    var messageText = '';
+                    for(var errorIdx = 0; errorIdx < errors.length; errorIdx++)
+                        messageText+= errors.item(errorIdx).getElementsByTagName('message').item(0).innerHTML + '\n';
+                    displayMetadataResponse(messageText);
+                }
+            }
+        binding.send(request);
+    }
+</script>
+
+
+<div class="bootstrap">
+    <div class="container">
+        <div class="sidebar col-xs-12 col-sm-3 col-md-3">
+            <div class="navbar" >
+                <nav role="navigation">
+                    <ul id="mynavbar" >
+                        <li class="header" id="Sect1"><a href="#" onclick="ShowPanel('0');return false;" class="nav-item nav-section-title">General Configuration</a></li>
+                        <ul>
+                            <li class="subitem" id="Sect11" ><a href="#" onclick="ShowPanel('1');return false;" class="nav-item sub-nav-item">Rebates Configuration</a></li>
+                            <li class="subitem" id="Sect12"><a href="#" onclick="ShowPanel('2');return false;" class="nav-item sub-nav-item">Pricing configuration</a></li>
+                        </ul>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="content col-xs-12 col-sm-9 col-md-9" >
+            <apex:actionStatus id="statusLoad" 
+                onstart="document.getElementById('divLoading').style.display = 'block';" 
+                onstop="document.getElementById('divLoading').style.display = 'none';ShowPanel(idPanelCurrent);" />
+            <div class="loading clsLoading" id="divLoading" style="display:none" >
+                <p style="vertical-align: middle;" >
+                    <img src="/img/loading.gif" alt="Saving" width="16" height="16" title="Saving" style="vertical-align: middle;"/>
+                    <span class="loadingText" style="vertical-align: middle;" >Saving</span>
+                </p>
+            </div>
+            <apex:form id="nav" styleClass="form-horizontal"> 
+                <apex:actionFunction action="{!setPanelCurrent}" name="setPanelCurrent" rerender="nav">
+                    <apex:param name="idPanel" assignTo="{!idPanelCurrent}" value="" />
+                </apex:actionFunction>
+            </apex:form>
+            <apex:form id="form" styleClass="form-horizontal">    
+                <apex:actionFunction name="displayMetadataResponse" action="{!displayMetadataResponse}" rerender="form">
+                    <apex:param name="metadataResponse" assignTo="{!metadataResponse}" value="{!metadataResponse}"/>
+                </apex:actionFunction>
+                <div class="panel noborder" id="0" style="display:none"  > 
+                        <apex:pageBlock mode="maindetail">
+                                <apex:pageMessages />
+                                 <apex:outputPanel rendered="{!MetadataConnectionWarning}">
+                                     <input id="createremotesitebtn" type="button" onclick="createRemoteSite();" value="Create Remote Site Setting"  styleClass="btn-sm btn-primary"/>
+                                 </apex:outputPanel>
+                                 <div class="form-group">
+                                    <apex:outputLabel value="Is special " for="cbxSPE" styleClass="col-sm-4 control-label" />
+                                    <div class="col-sm-8 form-control-column">
+                                        <apex:inputCheckbox value="{!configurations['0']['IsSpecial__c']}" id="cbxSPE" />
+                                     </div>
+                                 </div>
+                                 
+                                <div class="form-group">
+                                    <apex:outputLabel value="Vertical" for="slVER" styleClass="col-sm-4 control-label" />
+                                    <div class="col-sm-8 form-control-column">
+                                        <apex:selectList value="{!configurations['0']['Vertical__c']}"
+                                           size="1"
+                                           multiselect="false" 
+                                           id="slVER" 
+                                           styleClass="form-control" >
+                                            <apex:selectOptions value="{!selectLists['Configuration__mdt.Vertical__c']}" />
+                                        </apex:selectList>
+                                    </div>
+                                </div>
+                               
+                               <div class="form-group">
+                                    <apex:outputLabel value="Accuracy level" for="slACC" styleClass="col-sm-4 control-label" />
+                                    <div class="col-sm-8 form-control-column">
+                                        <apex:selectList value="{!configurations['0']['AccuracyLevel__c']}"
+                                           size="1"
+                                           multiselect="false" 
+                                           id="slACC" 
+                                           styleClass="form-control" >
+                                            <apex:selectOptions value="{!selectLists['Configuration__mdt.AccuracyLevel__c']}" />
+                                        </apex:selectList>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <apex:outputLabel value="Rounding" for="slROU" styleClass="col-sm-4 control-label" />
+                                    <div class="col-sm-8 form-control-column">
+                                         <apex:inputText value="{!configurations['0']['Rounding__c']}" id="slROU" />
+                                    </div>
+                                </div>
+                                
+                                
+                                <apex:outputPanel layout="block" styleClass="button-block">
+                                    <apex:commandButton id="Save1" value="Save" status="statusLoad" action="{!save}" rerender="form" styleClass="btn-sm btn-primary" />
+                                </apex:outputPanel>
+                        </apex:pageBlock>
+                </div>
+                <div class="panel noborder" id="1"  style="display:none" > 
+                        <apex:pageBlock mode="maindetail">
+                                <apex:pageMessages />
+                                 <div class="form-group">
+                                    <apex:outputLabel value="Is paid monthly " for="cbxIPM" styleClass="col-sm-4 control-label" />
+                                    <div class="col-sm-8 form-control-column">
+                                        <apex:inputCheckbox value="{!configurations['1']['IsPaidMonthly__c']}" id="cbxIPM" />
+                                     </div>
+                                 </div>
+                                <apex:outputPanel layout="block" styleClass="button-block">
+                                    <apex:commandButton id="Save2" value="Save" status="statusLoad" action="{!save}" rerender="form" styleClass="btn-sm btn-primary" />
+                                </apex:outputPanel>
+                        </apex:pageBlock>
+                </div>
+                <div class="panel noborder" id="2"  style="display:none" > 
+                        <apex:pageBlock mode="maindetail">
+                                <apex:pageMessages />
+                                 <div class="form-group">
+                                    <apex:outputLabel value="Is dynamic" for="cbxDYN" styleClass="col-sm-4 control-label" />
+                                    <div class="col-sm-8 form-control-column">
+                                        <apex:inputCheckbox value="{!configurations['2']['IsDynamic__c']}" id="cbxDYN" />
+                                     </div>
+                                 </div>
+                                <apex:outputPanel layout="block" styleClass="button-block">
+                                    <apex:commandButton id="Save3" value="Save" status="statusLoad" action="{!save}" rerender="form" styleClass="btn-sm btn-primary" />
+                                </apex:outputPanel>
+                        </apex:pageBlock>
+                </div>
+            </apex:form>
+            
+        </div>
+    </div>
+</div>
+</apex:page>
