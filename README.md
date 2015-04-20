@@ -8,3 +8,5 @@ Note also that Custom Metadata Records are stored in memory and are exempted fro
 
 This sample page is also using the <a href="https://github.com/financialforcedev/apex-mdapi target="_blank">Apex metadata wrapper api</a> .
 
+
+![MConfiguration App Demo Screenshot](https://raw.github.com/jbpringuey/SFDCConfig/blob/master/images/Configuration.png)
