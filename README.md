@@ -8,6 +8,14 @@ The other nice advantage is that Custom Metadata Records are stored in memory an
 
 This sample application is also using the great <a href="https://github.com/financialforcedev/apex-mdapi target="_blank">Apex metadata wrapper api</a> framework.
 
-Below is a preview of what it looks like.
+Below is a preview of the UI :
 
 ![MConfiguration App Demo Screenshot](https://github.com/jbpringuey/SFDCConfig/blob/master/images/Configuration.png)
+
+Custom Metadata helps you make deployment to various orgs less painfull :
+
+![Deploy to prod Screenshot](https://github.com/jbpringuey/SFDCConfig/blob/master/images/DeployToProd.png)
+
+Custom Metadata helps you better distribute your packages with custom metadata :
+
+![ISV intallation Screenshot](https://github.com/jbpringuey/SFDCConfig/blob/master/images/ISVInstallation.png)
