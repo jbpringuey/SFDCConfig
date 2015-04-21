@@ -2,7 +2,7 @@
 
 Custom Metadata Type will be available in Summer 2015 and will enable salesforce developer to create custom packageable records !
 
-This sample application demonstrate how to use Custom Metadata Type to build a standard configuration screen similar to one built by SalesforceFoundation/Cumulus project  <a href="https://github.com/SalesforceFoundation/Cumulus/blob/dev/src/pages/STG_SettingsManager.page" target="_blank">Settings Manager</a>  and not worry about using custom settings or custom object which will require writing post install scripts or loading data manually after each deployment. 
+This sample application demonstrates how to use custom metadata types to build a standard configuration screen similar to the Settings Manager built by SalesforceFoundation/Cumulus  <a href="https://github.com/SalesforceFoundation/Cumulus/blob/dev/src/pages/STG_SettingsManager.page" target="_blank">Settings Manager</a> . Custom metadata types are superior to list custom settings or custom objects for application configurations. The latter require writing post-install scripts or loading data manually after each deployment. Custom metadata types automate that process. 
 
 The other nice advantage is that Custom Metadata Records are stored in memory and are exempted from number of SOQL limits even if SOQL functionality is more limited.
 
