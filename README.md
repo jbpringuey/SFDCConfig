@@ -6,7 +6,7 @@ This sample application demonstrate how to use Custom Metadata Type to build a s
 
 The other nice advantage is that Custom Metadata Records are stored in memory and are exempted from number of SOQL limits even if SOQL functionality is more limited.
 
-This sample application is also using the great <a href="https://github.com/financialforcedev/apex-mdapi target="_blank">Apex metadata wrapper api</a> framework.
+This sample application is also using the great <a href="https://github.com/financialforcedev/apex-mdapi" target="_blank">Apex metadata wrapper api</a> framework.
 
 Below is a preview of the UI :
 
