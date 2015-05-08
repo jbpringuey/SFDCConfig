@@ -44,6 +44,19 @@ public class ConfigurationController {
         idPanelCurrent = '0';
     }
     
+    public static String getNamespace(){
+        ApexClass ac = [SELECT NameSpacePrefix 
+                        FROM ApexClass
+                        WHERE Name = 'ConfigurationController'];
+        string namespace = ac.NameSpacePrefix;
+        if(namespace==null){
+            return '';
+        }else{
+            return namespace+'__';
+        }
+    }
+
+    
 /**
   * Dynamic SOQL to query custom metadata values for each custom metadata
   */
@@ -75,7 +88,8 @@ public class ConfigurationController {
         List<SObject> entityDefinitions =[select QualifiedApiName from EntityDefinition where IsCustomizable =true];
         for(SObject entityDefinition : entityDefinitions){
             string entityQualifiedApiName = (string)entityDefinition.get(QUALIFIED_API_NAME_ATTRIBUTE);
-            if(entityQualifiedApiName.endsWith('__mdt')){
+            if(entityQualifiedApiName.startsWith(getNamespace()) &&
+                entityQualifiedApiName.endsWith('__mdt')){
                 List<SObject> fieldDefinitions =[select QualifiedApiName from FieldDefinition where EntityDefinition.QualifiedApiName =:entityQualifiedApiName];
                 Set<string> attributes = new Set<string>();
                 for(SObject fieldDefinition : fieldDefinitions){
